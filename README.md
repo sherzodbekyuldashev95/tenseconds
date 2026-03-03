@@ -1,4 +1,4 @@
-# The Move
+# Ten Seconds
 
 **A self-motivation tool for men to overcome the fear of approaching women.**
 
@@ -6,7 +6,7 @@
 
 ## What It Is
 
-*The Move* is a single-page motivational web app designed to reframe the fear of approaching someone you are attracted to. Instead of minimizing the fear of rejection, it replaces it with a more powerful one: the fear of a life spent alone because you never tried.
+*Ten Seconds* is a single-page motivational web app designed to reframe the fear of approaching someone you are attracted to. Instead of minimizing the fear of rejection, it replaces it with a more powerful one: the fear of a life spent alone because you never tried.
 
 The core insight is simple. Not approaching is not a neutral act. It is a choice with real, compounding consequences. This page makes those consequences visceral and personal.
 
@@ -108,3 +108,5 @@ Pull requests welcome. If you have suggestions for additional sections, sharper 
 ---
 
 *Built with the belief that the biggest obstacle most men face is not who they are. It is simply not showing up.*
+
+* Created on Claude AI*

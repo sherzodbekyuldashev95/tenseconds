@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Move</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#060606;color:#ececec;font-family:'Inter',sans-serif;overflow-x:hidden}
+:root{--red:#c0392b;--red2:#e74c3c;--dim:#444;--muted:#888;--txt:#ececec;--bg:#060606}
+
+/* PERSONALIZER */
+#pers{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px;background:#060606}
+.p-tag{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:#444;margin-bottom:48px;opacity:0;animation:rise 1s ease forwards .4s}
+.p-q{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,9vw,6.5rem);line-height:1;color:#ececec;margin-bottom:16px;opacity:0;animation:rise 1s ease forwards .9s}
+.p-sub{font-family:'Lora',serif;font-style:italic;font-size:clamp(.95rem,2vw,1.15rem);color:#888;margin-bottom:48px;opacity:0;animation:rise 1s ease forwards 1.3s}
+.p-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;opacity:0;animation:rise 1s ease forwards 1.7s}
+.p-in{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:4px;background:#0f0f0f;border:1px solid #1e1e1e;border-bottom:2px solid #c0392b;color:#ececec;padding:16px 24px;width:180px;text-align:center;outline:none}
+.p-in::placeholder{color:#333}
+.p-btn{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:4px;color:#060606;background:#c0392b;border:none;padding:16px 40px;cursor:pointer;transition:background .3s}
+.p-btn:hover{background:#e74c3c}
+
+#main{display:none}
+.sect{padding:110px 24px;background:#060606}
+.inner{max-width:700px;margin:0 auto}
+.iwide{max-width:900px;margin:0 auto}
+
+/* OPENER */
+#opener{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 24px;background:#060606;position:relative;overflow:hidden}
+.obg{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(10rem,35vw,28rem);color:#0d0d0d;line-height:1;pointer-events:none;user-select:none;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap}
+.oin{position:relative;z-index:1}
+.oey{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:#c0392b;margin-bottom:40px}
+.otit{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,14vw,10rem);line-height:.9;color:#ececec;margin-bottom:32px}
+.obod{font-family:'Lora',serif;font-style:italic;font-size:clamp(1.1rem,2.5vw,1.45rem);color:#888;line-height:1.85;max-width:520px;margin:0 auto 56px}
+.obod strong{color:#ececec;font-style:normal}
+.sh{display:flex;flex-direction:column;align-items:center;gap:10px}
+.sh span{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:#2a2a2a}
+.sl{width:1px;height:52px;background:linear-gradient(to bottom,#c0392b,transparent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* SHE SECTION */
+#she{background:#080808;border-top:1px solid #111;border-bottom:1px solid #111}
+.stit{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,6rem);line-height:.95;color:#ececec;margin-bottom:48px}
+.stit .r{color:#c0392b}
+.sbod{font-family:'Lora',serif;font-size:clamp(1rem,2vw,1.2rem);color:#ccc;line-height:1.9;margin-bottom:40px}
+.sbod em{color:#c0392b}
+.sbod strong{color:#ececec}
+.sbox{border-left:3px solid #c0392b;padding:24px 32px;background:#0d0505;margin:48px 0}
+.sbox p{font-family:'Lora',serif;font-style:italic;font-size:clamp(1.1rem,2.2vw,1.35rem);color:#ececec;line-height:1.8}
+.sbox p strong{color:#c0392b;font-style:normal}
+
+/* YEARS */
+#years{background:#060606;text-align:center}
+.yint{font-family:'Lora',serif;font-style:italic;font-size:clamp(1.1rem,2.5vw,1.5rem);color:#888;margin-bottom:80px;line-height:1.7}
+.yint strong{color:#ececec;font-style:normal}
+.yrow{display:flex;align-items:baseline;justify-content:center;gap:24px;margin-bottom:4px;opacity:0;transform:translateX(-60px);transition:opacity .8s ease,transform .8s ease}
+.yrow.visible{opacity:1;transform:translateX(0)}
+.ynum{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,14vw,9rem);line-height:1;color:#111;min-width:220px;text-align:right}
+.yrow.visible .ynum{color:#1a1a1a}
+.ytxt{font-family:'Lora',serif;font-style:italic;font-size:clamp(.85rem,1.5vw,1rem);color:#2a2a2a;text-align:left;max-width:260px;line-height:1.6}
+.yrow.visible .ytxt{color:#555}
+
+/* SCENES */
+#scenes{background:#080808}
+.shead{text-align:center;font-size:10px;letter-spacing:6px;text-transform:uppercase;color:#444;margin-bottom:72px}
+.sc{max-width:700px;margin:0 auto 4px;background:#0a0a0a;border-left:3px solid #111;padding:44px;opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease,border-color .4s}
+.sc.visible{opacity:1;transform:translateY(0)}
+.sc:hover{border-left-color:#c0392b}
+.sc-hd{display:flex;align-items:baseline;gap:20px;margin-bottom:20px}
+.sc-ag{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5rem);color:#161616;line-height:1;transition:color .4s}
+.sc:hover .sc-ag{color:#2a0808}
+.sc-yr{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#1e1e1e;transition:color .4s}
+.sc:hover .sc-yr{color:#c0392b}
+.sc-tx{font-family:'Lora',serif;font-style:italic;font-size:clamp(1rem,1.8vw,1.15rem);color:#999;line-height:1.85}
+.sc-tx strong{color:#ececec;font-style:normal}
+.sc-tx .g{color:#c0392b;font-style:normal;font-weight:600}
+
+/* WAITING */
+#waiting{background:#060606;text-align:center}
+.wey{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:#444;margin-bottom:48px}
+.wtit{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,9vw,7rem);line-height:.92;color:#ececec;margin-bottom:48px}
+.wtit .r{color:#c0392b}
+.wbod{font-family:'Lora',serif;font-size:clamp(1rem,2vw,1.2rem);color:#bbb;line-height:1.9;max-width:620px;margin:0 auto 48px}
+.wbod strong{color:#ececec}
+.wbod em{color:#c0392b}
+.wgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:64px}
+.wc{background:#0a0a0a;padding:36px 28px;text-align:left}
+.wc-n{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:#c0392b;line-height:1;margin-bottom:16px}
+.wc-t{font-family:'Lora',serif;font-style:italic;font-size:.95rem;color:#888;line-height:1.7}
+.wc-t strong{color:#ccc;font-style:normal}
+
+/* MATH */
+#math{background:#c0392b;padding:110px 24px;text-align:center}
+.mtit{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,6rem);color:#fff;line-height:.95;margin-bottom:48px}
+.meq{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:64px}
+.mi{text-align:center}
+.mn{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,10vw,6rem);color:#fff;line-height:1;display:block}
+.ml{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);display:block;margin-top:6px}
+.mop{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,4rem);color:rgba(255,255,255,.3)}
+.mbod{font-family:'Lora',serif;font-style:italic;font-size:clamp(1rem,2.2vw,1.3rem);color:rgba(255,255,255,.85);max-width:560px;margin:0 auto;line-height:1.85}
+.mbod strong{color:#fff;font-style:normal}
+
+/* STATS */
+#stats{background:#080808;text-align:center}
+.statit{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,4.5rem);color:#ececec;margin-bottom:72px;line-height:1}
+.statit span{color:#c0392b}
+.stagrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:72px}
+.stab{background:#0a0a0a;padding:48px 24px}
+.stan{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,5.5rem);color:#c0392b;line-height:1;display:block;margin-bottom:12px}
+.stad{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#444;line-height:1.6}
+.stacl{font-family:'Lora',serif;font-style:italic;font-size:clamp(1.1rem,2.5vw,1.4rem);color:#888;max-width:580px;margin:0 auto;line-height:1.85}
+.stacl strong{color:#ececec;font-style:normal}
+.stacl .r{color:#c0392b}
+
+/* CLOCK */
+#clock{background:#060606;text-align:center}
+.clbl{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:#444;margin-bottom:32px}
+.cldis{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,22vw,14rem);color:#c0392b;line-height:1;letter-spacing:4px;display:block;animation:glitch 6s ease-in-out infinite}
+@keyframes glitch{0%,95%,100%{opacity:1;transform:skewX(0)}96%{opacity:.6;transform:skewX(-2deg)}97%{opacity:1;transform:skewX(1deg)}98%{opacity:.7;transform:skewX(0)}}
+.clbod{font-family:'Lora',serif;font-style:italic;font-size:clamp(1rem,2.2vw,1.3rem);color:#888;max-width:600px;margin:48px auto 0;line-height:1.9}
+.clbod strong{color:#ececec;font-style:normal}
+.clbod .r{color:#c0392b}
+
+/* FINAL */
+#final{background:#060606;text-align:center;border-top:1px solid #111}
+.fpre{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:#444;margin-bottom:48px}
+.ftit{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,15vw,11rem);line-height:.88;color:#ececec;margin-bottom:48px}
+.ftit .r{color:#c0392b}
+.fbod{font-family:'Lora',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.35rem);color:#888;max-width:560px;margin:0 auto 72px;line-height:1.9}
+.fbod strong{color:#ececec;font-style:normal}
+.fbod .r{color:#c0392b}
+.cbtn{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:5px;color:#060606;background:#c0392b;border:none;padding:26px 72px;cursor:pointer;transition:background .3s,transform .2s}
+.cbtn:hover{background:#e74c3c;transform:scale(1.03)}
+.cnote{margin-top:20px;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#222}
+
+/* OVERLAY */
+#overlay{position:fixed;inset:0;background:#040404;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;opacity:0;pointer-events:none;transition:opacity .5s}
+#overlay.on{opacity:1;pointer-events:all}
+.ovn{font-family:'Bebas Neue',sans-serif;font-size:clamp(12rem,40vw,24rem);color:#c0392b;line-height:1;animation:boom .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes boom{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.ovph{font-family:'Lora',serif;font-style:italic;font-size:clamp(1rem,3vw,1.6rem);color:#333;margin-top:12px}
+.ovgo{font-family:'Bebas Neue',sans-serif;font-size:clamp(7rem,28vw,18rem);color:#ececec;line-height:1;animation:boom .4s cubic-bezier(.34,1.56,.64,1)}
+.ovgs{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:#c0392b;margin-top:16px}
+.ovcl{position:absolute;top:28px;right:28px;background:none;border:1px solid #1a1a1a;color:#333;padding:10px 24px;font-size:9px;letter-spacing:4px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .3s}
+.ovcl:hover{border-color:#c0392b;color:#ececec}
+
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.rv{opacity:0;transform:translateY(48px);transition:opacity .9s ease,transform .9s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+
+@media(max-width:640px){
+  .wgrid{grid-template-columns:1fr}
+  .stagrid{grid-template-columns:1fr}
+  .sc{padding:28px 20px}
+}
+</style>
+</head>
+<body>
+
+<div id="pers">
+  <p class="p-tag">Before you read this — make it real</p>
+  <h1 class="p-q">WHAT YEAR<br>WERE YOU<br>BORN?</h1>
+  <p class="p-sub">This page will show you your actual future. Not a stranger's. Yours.</p>
+  <div class="p-row">
+    <input class="p-in" type="number" id="by" placeholder="1995" min="1960" max="2005"/>
+    <button class="p-btn" onclick="go()">SHOW ME</button>
+  </div>
+</div>
+
+<div id="main">
+  <section id="opener">
+    <div class="obg" id="bgA"></div>
+    <div class="oin">
+      <p class="oey rv">A letter to the man who is hesitating</p>
+      <h1 class="otit rv" id="otit"></h1>
+      <p class="obod rv">Right now you have <strong id="ylt">decades</strong> ahead of you. The question is not whether you have time. The question is whether you will <strong>use it</strong> — or watch it disappear one missed moment at a time.</p>
+      <div class="sh rv"><span>Keep reading</span><div class="sl"></div></div>
+    </div>
+  </section>
+
+  <section id="she" class="sect">
+    <div class="inner">
+      <h2 class="stit rv">SHE IS NOT<br>GOING TO<br><span class="r">APPROACH.</span></h2>
+      <p class="sbod rv">This is not a theory. This is not an opinion. This is how the world works — and deep down, you already know it. <strong>Women almost never make the first move.</strong> Not because they are cold. Not because they are not interested. But because society has conditioned them, from childhood, to wait. To signal. To hope. To expect that if he is truly interested, <em>he will come to her.</em></p>
+      <p class="sbod rv">Right now — today — there are women who have noticed you. Women who found you attractive. Women who <strong>hoped you would say something.</strong> And you walked past them. And they said nothing. Because that is what they do. They wait for you to be brave enough. They have been waiting their entire lives for a man to simply walk up and say hello.</p>
+      <div class="sbox rv"><p>So understand what your silence actually means: <strong>it is not a pause.</strong> When you do not approach, the story ends right there — permanently. She is not going to come find you. She will move on. She will meet someone else — someone who moved. And you will never know what you lost.</p></div>
+      <p class="sbod rv">The man who gets the girl is almost never the most handsome. <strong>He is the one who showed up.</strong> That is the entire secret. The simple act of walking over. That is what separates a life lived fully from a life spent wondering.</p>
+    </div>
+  </section>
+
+  <section id="years" class="sect">
+    <div class="inner">
+      <p class="yint rv">You think you are afraid of rejection. But have you looked at what you are <strong>actually</strong> walking toward if you keep waiting? These are your years. Real ones. With your name on them.</p>
+      <div id="yrows"></div>
+    </div>
+  </section>
+
+  <section id="scenes" class="sect">
+    <p class="shead">What those years look like — if you keep saying nothing</p>
+    <div id="scards"></div>
+  </section>
+
+  <section id="waiting" class="sect">
+    <div class="inner">
+      <p class="wey rv">The other side of the story</p>
+      <h2 class="wtit rv">SOMEWHERE<br>RIGHT NOW,<br>SHE IS <span class="r">WAITING.</span></h2>
+      <p class="wbod rv">Your future partner — the woman who will know your laugh, who will be there at 2am, who will grow old beside you — <em>she exists right now.</em> She is in this city. She is going about her day. She has no idea you exist. And she is <strong>hoping someone like you will walk into her life.</strong><br><br>She cannot come to you. She will not make the first move. She is waiting for the version of you that is brave enough to say hello. <strong>The only question is whether you will ever become that man.</strong></p>
+      <div class="wgrid rv">
+        <div class="wc"><div class="wc-n">01</div><p class="wc-t"><strong>She noticed you.</strong> Across the room, on the street, in a cafe. She made brief eye contact. She looked away. She hoped you would come over.</p></div>
+        <div class="wc"><div class="wc-n">02</div><p class="wc-t"><strong>She waited.</strong> A few seconds. Maybe longer. She could feel whether you would move. Her heart was open for that small window of time.</p></div>
+        <div class="wc"><div class="wc-n">03</div><p class="wc-t"><strong>You said nothing.</strong> The window closed. She moved on. You both walked away — strangers forever. This happens more than you know.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cost" style="background:#080808;padding:110px 24px;">
+    <div style="max-width:900px;margin:0 auto;">
+      <h3 class="rv" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,5vw,3.5rem);color:#ececec;text-align:center;margin-bottom:60px;line-height:1.1;">The <span style="color:#c0392b">actual</span> cost of each choice</h3>
+      <div class="rv" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;">
+        <div style="padding:14px 28px;font-size:10px;letter-spacing:4px;text-transform:uppercase;background:#0a0a0a;color:#333;">If you say nothing</div>
+        <div style="padding:14px 28px;font-size:10px;letter-spacing:4px;text-transform:uppercase;background:#0d0606;color:#c0392b;">If you approach</div>
+      </div>
+      <div class="rv" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;">
+        <div style="padding:28px;background:#0e0e0e;color:#555;font-style:italic;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;">&#10007;&#160;&#160;She walks away and you never know what could have been</div>
+        <div style="padding:28px;background:#110808;color:#ddd;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;"><span style="color:#c0392b">&#10003;&#160;&#160;</span>She walks away and you move on in 10 minutes</div>
+      </div>
+      <div class="rv" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;">
+        <div style="padding:28px;background:#0e0e0e;color:#555;font-style:italic;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;">&#10007;&#160;&#160;You carry the what-if for years, sometimes forever</div>
+        <div style="padding:28px;background:#110808;color:#ddd;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;"><span style="color:#c0392b">&#10003;&#160;&#160;</span>You feel a small sting, then pride for trying</div>
+      </div>
+      <div class="rv" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;">
+        <div style="padding:28px;background:#0e0e0e;color:#555;font-style:italic;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;">&#10007;&#160;&#160;You slowly stop believing you are capable of this</div>
+        <div style="padding:28px;background:#110808;color:#ddd;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;"><span style="color:#c0392b">&#10003;&#160;&#160;</span>You build real confidence with every attempt</div>
+      </div>
+      <div class="rv" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;">
+        <div style="padding:28px;background:#0e0e0e;color:#555;font-style:italic;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;">&#10007;&#160;&#160;Your world becomes smaller every year</div>
+        <div style="padding:28px;background:#110808;color:#ddd;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;"><span style="color:#c0392b">&#10003;&#160;&#160;</span>Your world expands with conversations, connections, chances</div>
+      </div>
+      <div class="rv" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+        <div style="padding:28px;background:#0e0e0e;color:#555;font-style:italic;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;">&#10007;&#160;&#160;You end up alone. Not by fate, but by silence</div>
+        <div style="padding:28px;background:#110808;color:#ddd;font-family:'Lora',serif;font-size:clamp(.9rem,1.6vw,1.05rem);line-height:1.6;"><span style="color:#c0392b">&#10003;&#160;&#160;</span>One day, one of them says yes. And everything changes.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="math">
+    <div class="inner rv">
+      <h2 class="mtit">THE MATH<br>IS BRUTAL.</h2>
+      <div class="meq">
+        <div class="mi"><span class="mn">10</span><span class="ml">Seconds of<br>nervousness</span></div>
+        <div class="mop">vs</div>
+        <div class="mi"><span class="mn" id="ly">40</span><span class="ml">Years of<br>loneliness</span></div>
+      </div>
+      <p class="mbod">Ten seconds of your heart pounding as you walk toward her. That is the entire price of admission. On the other side of those ten seconds is <strong>the rest of your life</strong> — every conversation, every morning waking up next to someone who chose you. <strong>Ten seconds.</strong> That is all it costs. And right now you are choosing not to pay it.</p>
+    </div>
+  </section>
+
+  <section id="stats" class="sect">
+    <div class="iwide">
+      <h2 class="statit rv">LONELINESS WILL<br><span>DESTROY</span> YOU.<br>LITERALLY.</h2>
+      <div class="stagrid rv">
+        <div class="stab"><span class="stan">15x</span><span class="stad">cigarettes worth of<br>daily health damage<br>from chronic loneliness</span></div>
+        <div class="stab"><span class="stan">26%</span><span class="stad">higher risk of<br>premature death from<br>social isolation</span></div>
+        <div class="stab"><span class="stan">8 yrs</span><span class="stad">shorter average lifespan<br>for chronically lonely men<br>vs partnered men</span></div>
+      </div>
+      <p class="stacl rv">You are not afraid of rejection. <strong>Rejection is nothing.</strong> A small sting, an hour of wounded pride, and it is gone. What you should be afraid of is waking up at 60 in a silent apartment, with no one to call, no one who knows your name the way a partner does. <span class="r">That is the outcome you are actively choosing every time you say nothing.</span></p>
+    </div>
+  </section>
+
+  <section id="clock" class="sect">
+    <div class="inner">
+      <p class="clbl rv">Your life. Right now. Passing.</p>
+      <span class="cldis rv" id="clk">00:00:00</span>
+      <p class="clbod rv">Every tick is a second of your life gone. Not paused. <span class="r">Gone.</span><br><br>Somewhere right now, a man who is no better than you just walked up to a woman and said something simple. She smiled. He got her number. <strong>Not because he was ready. Because he moved before his brain could stop him.</strong><br><br>Your future partner is out there aging just like you. Every day you wait is a day of your life together that you will never get back. <span class="r">The clock does not stop while you think about it.</span></p>
+    </div>
+  </section>
+
+  <section id="final" class="sect">
+    <div class="inner">
+      <p class="fpre rv">This is your moment</p>
+      <h2 class="ftit rv">STOP<br><span class="r">WAITING.</span><br>MOVE.</h2>
+      <p class="fbod rv">She will not come to you. The window closes in seconds. Rejection fades in hours. <span class="r">Regret lasts a lifetime.</span> You know what you need to do. You have always known. The only thing standing between you and the life you want is <strong>ten seconds of courage.</strong><br><br>Start the countdown. Then go. <strong>Do not think. Just walk.</strong></p>
+      <div class="rv"><button class="cbtn" onclick="startCount()">START THE COUNTDOWN</button><p class="cnote">5 seconds. Then you go. No excuses.</p></div>
+    </div>
+  </section>
+</div>
+
+<div id="overlay">
+  <button class="ovcl" onclick="closeOv()">Close</button>
+  <div id="ovin"></div>
+</div>
+
+<script>
+function go(){
+  var val=parseInt(document.getElementById('by').value);
+  if(!val||val<1960||val>2005){
+    var i=document.getElementById('by');
+    i.style.borderBottomColor='#e74c3c';
+    i.placeholder='Enter 1960-2005';
+    return;
+  }
+  var cy=new Date().getFullYear();
+  var age=cy-val;
+  var left=Math.max(5,80-age);
+  document.getElementById('bgA').textContent=age;
+  document.getElementById('otit').innerHTML='YOU ARE<br><span style="color:#c0392b">'+age+'</span><br>YEARS OLD.';
+  document.getElementById('ylt').textContent='roughly '+left+' years';
+  document.getElementById('ly').textContent=Math.max(10,left);
+
+  var miles=[
+    {a:5,t:'You are still waiting. Still telling yourself someday.'},
+    {a:10,t:'A decade gone. Your friends have families. You have excuses.'},
+    {a:20,t:'Two decades of silence. The loneliness has become background noise.'},
+    {a:35,t:'You have forgotten what it feels like to be truly known by someone.'},
+    {a:50,t:'You are old now. And alone. And you remember every moment you said nothing.'}
+  ].filter(function(r){return age+r.a<=90});
+
+  document.getElementById('yrows').innerHTML=miles.map(function(r,i){
+    return '<div class="yrow" style="transition-delay:'+(i*.12)+'s"><span class="ynum">'+(cy+r.a)+'</span><span class="ytxt"><strong>Age '+(age+r.a)+'.</strong> '+r.t+'</span></div>';
+  }).join('');
+
+  var scenes=[
+    {a:7,t:"You are at a friend's wedding. The room is full of couples. You sit alone, drink in hand, watching everyone dance. You think about a girl you saw on the street two years ago — the one you almost said something to. <span class='g'>You still think about her.</span>"},
+    {a:15,t:"You come home to an apartment that has been quiet for so long you have stopped noticing it. You eat dinner standing over the sink. You go to bed. <strong>Nobody in the world knows if you had a good day or a terrible one. Nobody asks.</strong>"},
+    {a:25,t:"Your close friends have moved into a different life — family holidays, school runs, someone to share everything with. You get invited sometimes. But there is always that feeling. The odd number at the table. <span class='g'>You stop going.</span>"},
+    {a:40,t:"You sit by a window and watch the street below. A couple walks past, laughing about something small. You don't feel anger. Just a vast quiet distance. You count not the rejections you suffered — <strong>you barely remember those</strong> — but the moments you said nothing. There were so many. And every single one was a choice."}
+  ].filter(function(s){return age+s.a<=90});
+
+  document.getElementById('scards').innerHTML=scenes.map(function(s,i){
+    return '<div class="sc" style="transition-delay:'+(i*.15)+'s"><div class="sc-hd"><div class="sc-ag">'+(age+s.a)+'</div><div class="sc-yr">'+(cy+s.a)+'</div></div><p class="sc-tx">'+s.t+'</p></div>';
+  }).join('');
+
+  document.getElementById('pers').style.display='none';
+  document.getElementById('main').style.display='block';
+  initObs();
+  setInterval(tick,1000);
+  tick();
+}
+
+function initObs(){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on','visible');});
+  },{threshold:.1});
+  document.querySelectorAll('.rv,.yrow,.sc').forEach(function(el){obs.observe(el);});
+}
+
+function tick(){
+  var n=new Date();
+  var el=document.getElementById('clk');
+  if(el)el.textContent=pad(n.getHours())+':'+pad(n.getMinutes())+':'+pad(n.getSeconds());
+}
+function pad(x){return String(x).padStart(2,'0')}
+
+function startCount(){
+  var ov=document.getElementById('overlay');
+  var inn=document.getElementById('ovin');
+  ov.classList.add('on');
+  var phrases=['She is out there right now.','She will not come to you.','The window is closing.','Ten seconds of courage.','This is that moment.'];
+  var c=5;
+  function t(){
+    inn.innerHTML='<div class="ovn">'+c+'</div><div class="ovph">'+phrases[5-c]+'</div>';
+    if(c>1){c--;setTimeout(t,1100);}
+    else{
+      setTimeout(function(){
+        inn.innerHTML='<div class="ovgo">GO.</div><div class="ovgs">Walk toward her. Right now. Do not think.</div>';
+        setTimeout(function(){ov.classList.remove('on');},3500);
+      },1100);
+    }
+  }
+  t();
+}
+
+function closeOv(){document.getElementById('overlay').classList.remove('on');}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var i=document.getElementById('by');
+  if(i)i.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+});
+</script>
+</body>
+</html>

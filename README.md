@@ -109,4 +109,4 @@ Pull requests welcome. If you have suggestions for additional sections, sharper 
 
 *Built with the belief that the biggest obstacle most men face is not who they are. It is simply not showing up.*
 
-* Created on Claude AI*
+*Created on Claude AI*
